@@ -24,7 +24,6 @@ public class TaskControllerTest {
 	
 	@Before
 	public void setup() {
-//		MockitoAnnotations.initMocks(this);
 		MockitoAnnotations.openMocks(this);
 	}
 	
@@ -44,7 +43,7 @@ public class TaskControllerTest {
 	@Test
 	public void naoDeveSalvarTarefaSemData() {
 		Task task = new Task();
-		task.setTask("Descrição");;
+		task.setTask("Descrição");
 		try {
 			controller.save(task);
 			Assert.fail("Não deve salvar tarefa sem data");
