@@ -62,6 +62,14 @@ pipeline{
                     deploy adapters: [tomcat8(credentialsId: 'login-tomcat', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
                 }
             }
+        }
+        stage('Functional Test'){
+            steps{
+                dir('functional-test') {
+                    git credentialsId: 'login-github', url: 'https://github.com/joaovitor-cbc/task-functional-test'
+                    sh 'mvn test'
+                }   
+            }
         }       
     }
 }
