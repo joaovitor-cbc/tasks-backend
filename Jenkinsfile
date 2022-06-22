@@ -1,6 +1,6 @@
 pipeline{
     agent any
-    stages {
+    stages{
         stage('Build Backend'){
             steps{
                 sh 'mvn clean package -DskipTests=true'
@@ -42,6 +42,21 @@ pipeline{
                 }   
             }
         }
+        stage('Git clone Frontend'){
+            dir('frontend'){
+                git credentialsId: 'login-github', url: 'https://github.com/joaovitor-cbc/tasks-frontend'
+            }
+        }
+        stage('Build Frontend'){
+            dir('frontend'){
+                sh 'mvn clean package'
+            }
+        }
+        stage('Deploy Frontend'){
+            dir('frontend'){
+                deploy adapters: [tomcat8(credentialsId: 'login-tomcat', path: '', url: 'http://localhost:8001/')], contextPath: 'tasks', war: 'target/tasks.war'
+            }
+        }       
     }
 }
 
